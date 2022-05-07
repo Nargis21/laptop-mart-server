@@ -17,7 +17,7 @@ async function run() {
     try {
         await client.connect()
         const productCollection = client.db('laptopMart').collection('product')
-        // load all  product api
+        // load  product api
         app.get('/product', async (req, res) => {
             const query = {}
             const cursor = productCollection.find(query)
