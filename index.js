@@ -6,7 +6,12 @@ const app = express()
 const port = process.env.PORT || 5000
 
 // middlewares
-app.use(cors())
+const corsConfig = {
+    origin: true,
+    credentials: true,
+}
+app.use(cors(corsConfig))
+app.options('*', cors(corsConfig))
 app.use(express())
 
 
@@ -43,7 +48,7 @@ async function run() {
             const options = { upsert: true }
             const updateDoc = {
                 $set: {
-                    quantity: updatedQuantity.newQuantity
+                    quantity: updatedQuantity.updatedQuantity
                 }
             }
             const result = await productCollection.updateOne(filter, updateDoc, options)
