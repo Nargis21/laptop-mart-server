@@ -46,7 +46,8 @@ async function run() {
                     quantity: updatedQuantity
                 }
             }
-            const result = await productCollection.updateOne(filter, updateDoc, options)
+            const result = await productCollection.updateOne(
+                { $inc: { quantity: -1 } }, filter, updateDoc, options)
             res.send(result)
         })
 
