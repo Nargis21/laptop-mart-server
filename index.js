@@ -70,7 +70,7 @@ async function run() {
         })
 
         // Add product api
-        app.post('/inventory', async (req, res) => {
+        app.post('/product', async (req, res) => {
             const newProduct = req.body
             const result = await productCollection.insertOne(newProduct)
             res.send(result)
