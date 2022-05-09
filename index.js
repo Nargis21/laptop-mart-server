@@ -35,7 +35,6 @@ function verifyJWT(req, res, next) {
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.dswlh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-console.log(uri)
 async function run() {
     try {
         await client.connect()
@@ -44,7 +43,7 @@ async function run() {
         // Auth api
         app.post('/login', async (req, res) => {
             const user = req.body
-            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2d' })
             res.send(accessToken)
         })
 
@@ -101,20 +100,29 @@ async function run() {
         })
 
 
-        app.get('/items', verifyJWT, async (req, res) => {
-            const decodedEmail = req.decoded.email
-            console.log(decodedEmail)
+        // app.get('/items', verifyJWT, async (req, res) => {
+        //     const decodedEmail = req.decoded.email
+        //     console.log(decodedEmail)
+        //     const email = req.query.email
+        //     console.log(email)
+        //     if (decodedEmail === email) {
+        //         const query = { email: email }
+        //         const cursor = productCollection.find(query)
+        //         const result = await cursor.toArray()
+        //         res.send(result)
+        //     }
+        //     else {
+        //         return res.status(403).send({ message: 'Forbidden access' })
+        //     }
+        // })
+
+        app.get('/items', async (req, res) => {
             const email = req.query.email
             console.log(email)
-            if (decodedEmail === email) {
-                const query = { email: email }
-                const cursor = productCollection.find(query)
-                const result = await cursor.toArray()
-                res.send(result)
-            }
-            else {
-                return res.status(403).send({ message: 'Forbidden access' })
-            }
+            const query = { email: email }
+            const cursor = productCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
         })
 
     }
