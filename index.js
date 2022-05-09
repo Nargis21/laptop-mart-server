@@ -100,9 +100,12 @@ async function run() {
             res.send(result)
         })
 
+
         app.get('/items', verifyJWT, async (req, res) => {
             const decodedEmail = req.decoded.email
+            console.log(decodedEmail)
             const email = req.query.email
+            console.log(email)
             if (decodedEmail === email) {
                 const query = { email: email }
                 const cursor = productCollection.find(query)
